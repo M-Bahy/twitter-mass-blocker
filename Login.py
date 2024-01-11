@@ -11,6 +11,7 @@ load_dotenv()
 
 tweet_author = ""
 targets = []
+blocked = 0
 
 
 def init_driver():
@@ -18,13 +19,6 @@ def init_driver():
     chrome_options = Options()
     chrome_options.binary_location = chrome_path
     return webdriver.Chrome(options=chrome_options)
-
-
-def keep_open(driver):
-    while True:
-        if not any(tab for tab in driver.window_handles if tab):
-            driver.quit()
-            break
 
 
 def delay(seconds):
@@ -45,6 +39,7 @@ def login(driver):
     password_field.send_keys(os.getenv("PASSWORD"))
     password_field.send_keys(Keys.RETURN)
     delay(2)
+    print("Logged in successfully")
 
 
 def get_target(driver):
@@ -63,6 +58,7 @@ def get_target(driver):
         )
     tweet_author = target_username.text[1:]
     targets.append(tweet_author)
+    print(f"Target is {tweet_author}")
 
 
 def get_followers(driver):
@@ -75,7 +71,7 @@ def get_followers(driver):
         "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[*]/div/div/div/div/div[2]/div[1]/div[1]/div/div[2]/div/a/div/div/span",
     )
     for follower in followers:
-        targets.append(follower.text[1])
+        targets.append(follower.text[1:])
     driver.execute_script("window.scrollTo(0, 0);")
     delay(2)
     followers = driver.find_elements(
@@ -83,42 +79,52 @@ def get_followers(driver):
         "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[*]/div/div/div/div/div[2]/div[1]/div[1]/div/div[2]/div/a/div/div/span",
     )
     for follower in followers:
-        follower_text = follower.text[1]
+        follower_text = follower.text[1:]
         if follower_text not in targets:
             targets.append(follower_text)
+    print(f"Found {len(targets)-1} followers")
 
 
 def mass_block(driver):
+    global blocked
     for target in targets:
+        print(f"Blocked {blocked} out of {len(targets)}")
         driver.get(f"https://x.com/{target}")
         delay(2)
-        three_dots_button = driver.find_element(
-            By.XPATH,
-            "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div/div/div/div[1]/div[2]/div[1]",
-        )
-        three_dots_button.click()
+        try:
+            three_dots_button = driver.find_element(
+                By.XPATH,
+                "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div/div/div/div[1]/div[2]/div[1]",
+            )
+            three_dots_button.click()
+        except Exception:
+            continue
         delay(1)
-        block_button = driver.find_element(
-            By.XPATH,
-            "/html/body/div[1]/div/div/div[1]/div[2]/div/div/div/div[2]/div/div[3]/div/div/div/div[4]/div[2]/div/span",
-        )
-        block_button.click()
-        delay(1)
-        confirm_block_button = driver.find_element(
-            By.XPATH,
-            "/html/body/div[1]/div/div/div[1]/div[2]/div/div/div/div/div/div[2]/div[2]/div[2]/div[1]",
-        )
-        confirm_block_button.click()
-        delay(2)
+        try:
+            block_button = driver.find_element(
+                By.XPATH,
+                "/html/body/div[1]/div/div/div[1]/div[2]/div/div/div/div[2]/div/div[3]/div/div/div/div[4]/div[2]/div/span",
+            )
+            block_button.click()
+            delay(1)
+            confirm_block_button = driver.find_element(
+                By.XPATH,
+                "/html/body/div[1]/div/div/div[1]/div[2]/div/div/div/div/div/div[2]/div[2]/div[2]/div[1]",
+            )
+            confirm_block_button.click()
+            delay(2)
+            blocked += 1
+        except Exception:
+            continue
 
 
 def main():
     driver = init_driver()
     login(driver)
     get_target(driver)
-    #get_followers(driver)
+    get_followers(driver)
     mass_block(driver)
-    keep_open(driver)
+    print(f"Blocked {blocked} accounts successfully out of {len(targets)}")
 
 
 if __name__ == "__main__":
