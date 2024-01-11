@@ -29,7 +29,7 @@ pip install -r requirements.txt
 
 To run the script, simply double click on the `run.bat` file in the project directory and give it the tweet you want to block its author and his followers.
 
-## Limitations and Notes
+## Limitations and Notes ⚠️
 
 - You have  to disable two-factor authentication on your Twitter account to be able to run the script.
 - The script is only tested on windows.
