@@ -4,6 +4,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from dotenv import load_dotenv
 import os
+import time
+
 
 load_dotenv()
 
@@ -22,9 +24,29 @@ def keep_open(driver):
             break
 
 
+def delay(seconds):
+    time.sleep(seconds)
+
+
+def login(driver):
+    driver.get("https://twitter.com/i/flow/login")
+    delay(2)
+    username_field = driver.find_element(By.NAME, "text")
+    username_field.click()
+    delay(1)
+    username_field.send_keys(os.getenv("account_username"))
+    delay(1)
+    username_field.send_keys(Keys.RETURN)
+    delay(1)
+    password_field = driver.find_element(By.NAME, "password")
+    password_field.send_keys(os.getenv("PASSWORD"))
+    password_field.send_keys(Keys.RETURN)
+    delay(2)
+
+
 def main():
     driver = init_driver()
-    driver.get("https://www.youtube.com/watch?v=pcmNmaXKtX0")
+    login(driver)
     keep_open(driver)
 
 
