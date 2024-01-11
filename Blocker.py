@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 import os
 import time
 
-
 load_dotenv()
 
 tweet_author = ""
@@ -42,9 +41,9 @@ def login(driver):
     print("Logged in successfully")
 
 
-def get_target(driver):
+def get_target(driver, url):
     global tweet_author
-    driver.get(os.getenv("target_url"))
+    driver.get(url)
     delay(5)
     try:
         target_username = driver.find_element(
@@ -118,13 +117,18 @@ def mass_block(driver):
             continue
 
 
-def main():
+def start(url):
     driver = init_driver()
     login(driver)
-    get_target(driver)
+    get_target(driver, url)
     get_followers(driver)
     mass_block(driver)
     print(f"Blocked {blocked} accounts successfully out of {len(targets)}")
+
+
+def main():
+    url = input("Enter tweet URL: ")
+    start(url)
 
 
 if __name__ == "__main__":
