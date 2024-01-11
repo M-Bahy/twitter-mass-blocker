@@ -1,6 +1,6 @@
 # Twitter Mass Blocker
 
-This Python project is designed to block a tweet author and all of their followers on Twitter.
+This Python project is designed to block a tweet author and his followers on Twitter.
 
 ## Getting Started
 
@@ -27,4 +27,20 @@ pip install -r requirements.txt
 
 ## Running the Script
 
-To run the script, simply double click on the `run.bat` file in the project directory. This will execute the Python script and keep the terminal open so you can see the progress.
+To run the script, simply double click on the `run.bat` file in the project directory and give it the tweet you want to block its author and his followers.
+
+## Limitations and Notes
+
+- You have  to disable two-factor authentication on your Twitter account to be able to run the script.
+- The script is only tested on windows.
+- The script will not block private accounts.
+- The script will not block accounts that have blocked you.
+- Since the script is running on top of the browser version of Twitter, it usually loads 40 followers only.
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+## Contributing
+
+Feel free to contribute to this project by creating a pull request or submitting an issue.
