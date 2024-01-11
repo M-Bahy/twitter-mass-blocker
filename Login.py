@@ -88,7 +88,6 @@ def get_followers(driver):
         follower_text = follower.text[1]
         if follower_text not in targets:
             targets.append(follower_text)
-    print(len(targets))
 
 
 def main():
@@ -97,6 +96,7 @@ def main():
     get_target(driver)
     get_followers(driver)
     keep_open(driver)
+    print(len(targets))
 
 
 if __name__ == "__main__":
