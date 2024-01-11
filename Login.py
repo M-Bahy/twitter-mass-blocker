@@ -70,16 +70,25 @@ def get_followers(driver):
     delay(5)
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
     delay(2)
+    followers = driver.find_elements(
+        By.XPATH,
+        "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[*]/div/div/div/div/div[2]/div[1]/div[1]/div/div[2]/div/a/div/div/span",
+    )
+    for follower in followers:
+        follower_text = follower.text[1]
+        if follower_text not in targets:
+            targets.append(follower_text)
     driver.execute_script("window.scrollTo(0, 0);")
     delay(2)
     followers = driver.find_elements(
         By.XPATH,
         "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[*]/div/div/div/div/div[2]/div[1]/div[1]/div/div[2]/div/a/div/div/span",
     )
-    print(len(followers))
     for follower in followers:
-        print(follower.text)
-        targets.append(follower.text[1])
+        follower_text = follower.text[1]
+        if follower_text not in targets:
+            targets.append(follower_text)
+    print(len(targets))
 
 
 def main():
