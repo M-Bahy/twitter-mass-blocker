@@ -75,9 +75,7 @@ def get_followers(driver):
         "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/section/div/div/div[*]/div/div/div/div/div[2]/div[1]/div[1]/div/div[2]/div/a/div/div/span",
     )
     for follower in followers:
-        follower_text = follower.text[1]
-        if follower_text not in targets:
-            targets.append(follower_text)
+        targets.append(follower.text[1])
     driver.execute_script("window.scrollTo(0, 0);")
     delay(2)
     followers = driver.find_elements(
@@ -96,7 +94,6 @@ def main():
     get_target(driver)
     get_followers(driver)
     keep_open(driver)
-    print(len(targets))
 
 
 if __name__ == "__main__":
