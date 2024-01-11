@@ -88,11 +88,36 @@ def get_followers(driver):
             targets.append(follower_text)
 
 
+def mass_block(driver):
+    for target in targets:
+        driver.get(f"https://x.com/{target}")
+        delay(2)
+        three_dots_button = driver.find_element(
+            By.XPATH,
+            "/html/body/div[1]/div/div/div[2]/main/div/div/div/div/div/div[3]/div/div/div/div/div[1]/div[2]/div[1]",
+        )
+        three_dots_button.click()
+        delay(1)
+        block_button = driver.find_element(
+            By.XPATH,
+            "/html/body/div[1]/div/div/div[1]/div[2]/div/div/div/div[2]/div/div[3]/div/div/div/div[4]/div[2]/div/span",
+        )
+        block_button.click()
+        delay(1)
+        confirm_block_button = driver.find_element(
+            By.XPATH,
+            "/html/body/div[1]/div/div/div[1]/div[2]/div/div/div/div/div/div[2]/div[2]/div[2]/div[1]",
+        )
+        confirm_block_button.click()
+        delay(2)
+
+
 def main():
     driver = init_driver()
     login(driver)
     get_target(driver)
-    get_followers(driver)
+    #get_followers(driver)
+    mass_block(driver)
     keep_open(driver)
 
 
