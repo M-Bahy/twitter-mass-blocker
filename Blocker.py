@@ -117,18 +117,24 @@ def mass_block(driver):
             continue
 
 
-def start(url):
-    driver = init_driver()
-    login(driver)
+def collect_targets(driver, url):
     get_target(driver, url)
     get_followers(driver)
-    mass_block(driver)
-    print(f"Blocked {blocked} accounts successfully out of {len(targets)}")
 
 
 def main():
-    url = input("Enter tweet URL: ")
-    start(url)
+    driver = init_driver()
+    login(driver)
+
+    if not os.path.exists("targets.txt"):
+        open("targets.txt", "w").close()
+    with open("targets.txt", "r") as file:
+        for url in file:
+            collect_targets(driver, url.strip())
+
+    mass_block(driver)
+
+    open("targets.txt", "w").close()
 
 
 if __name__ == "__main__":

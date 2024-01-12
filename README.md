@@ -27,7 +27,7 @@ pip install -r requirements.txt
 
 ## Running the Script
 
-To run the script, simply double click on the `run.bat` file in the project directory and give it the tweet you want to block its author and his followers.
+To run the script, copy the links to the tweets you want to block their author and his followers in targets.txt then simply double click on the `run.bat` file 
 
 ## Limitations and Notes ⚠️
 
