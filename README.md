@@ -1,6 +1,6 @@
 # Twitter Mass Blocker
 
-This Python project is designed to block a tweet author and his followers on Twitter.
+⚠️ This script no longer works since twitter hide the likes ⚠️
 
 ## Getting Started
 
